@@ -29,7 +29,7 @@ def preprocess_text(text, source_type="general"):
     """
     if not text: return ""
 
-    # 1. Unicode Normalization (NFC) - CRITICAL for Malayalam
+    # 1. Unicode Normalization (NFC)
     text = unicodedata.normalize('NFC', text)
 
     # 2. Remove Zero Width spaces (unless ZWNJ - we usually keep ZWNJ for meaning)
