@@ -1,63 +1,45 @@
-import sys
-import os
+import re
 
-def normalize_malayalam_text(text):
-    """
-    Replaces legacy sequence (Consonant + Virama + ZWJ) with Atomic Chillus.
-    Also handles ZWNJ if specific cleanup is needed.
-    """
-    VIRAMA = '\u0D4D'
-    ZWJ = '\u200D'
-    ZWNJ = '\u200C'  
+def normalize_malayalam_v3(input_path, output_path):
+    # Matches if the NEXT character is NOT a Malayalam character (punctuation, space, etc.)
+    malayalam_end = r'(?![\u0020-\u007E\u0D00-\u0D7F])' 
 
-    chillu_map = {
-        # 1. ണ + ് + ZWJ -> ണ്‍ (Chillu NN)
-        '\u0D23' + VIRAMA + ZWJ : '\u0D7A', 
-        
-        # 2. ന + ് + ZWJ -> ന്‍ (Chillu N)
-        '\u0D28' + VIRAMA + ZWJ : '\u0D7B',
-
-        # 3. ര + ് + ZWJ -> ര്‍ (Chillu RR)
-        '\u0D30' + VIRAMA + ZWJ : '\u0D7C',
-
-        # 4. ല + ് + ZWJ -> ല്‍ (Chillu L)
-        '\u0D32' + VIRAMA + ZWJ : '\u0D7D',
-
-        # 5. ള + ് + ZWJ -> ള്‍ (Chillu LL)
-        '\u0D33' + VIRAMA + ZWJ : '\u0D7E'
-
+    end_rules = {
+        r'ങള്' + malayalam_end: 'ങൾ',
+        r'കള്' + malayalam_end: 'കൾ',
+        r'ടാന്' + malayalam_end: 'ടാൻ',
+        r'കാന്' + malayalam_end: 'കാൻ', 
+        r'കാര്' + malayalam_end: 'കാർ',
+        r'ല്' + malayalam_end: 'ൽ',
+        r'ില്' + malayalam_end: 'ിൽ',  
     }
 
-    # We use simple string replacement as it is faster than regex for fixed sequences
-    for old_seq, new_char in chillu_map.items():
-        if old_seq in text:
-            text = text.replace(old_seq, new_char)
+    anywhere_rules = {
+        r'ങള്ക' + malayalam_end: 'ങൾക',
+        r'കാര്ക' + malayalam_end: 'കാർക',
+        r'ര്മ' + malayalam_end: 'ർമ',
+        r'ര്ക' + malayalam_end: 'ർക',
+        r'ള്ക' + malayalam_end: 'ൾക'
+    }
 
-    # NOTE: In modern Unicode, [Consonant + Virama + ZWNJ] is the valid standard 
-    # for "Explicit Virama" (showing the Chandrakkala explicitly).
-    # However, if you want to remove ZWNJ to force ligatures (Koottaksharam), 
-    
-    # text = text.replace(ZWNJ, '') 
-
-    return text
-
-def process_file(input_filename, output_filename):
     try:
-        # Open with utf-8 encoding to handle Malayalam characters correctly
-        with open(input_filename, 'r', encoding='utf-8') as f_in:
-            content = f_in.read()
+        with open(input_path, 'r', encoding='utf-8') as infile:
+            content = infile.read()
 
-        normalized_content = normalize_malayalam_text(content)
+        # Step 1: Specific clusters anywhere (Specific to General)
+        for pattern, replacement in anywhere_rules.items():
+            content = re.sub(pattern, replacement, content)
 
-        with open(output_filename, 'w', encoding='utf-8') as f_out:
-            f_out.write(normalized_content)
+        # Step 2: Word-ends (Context-aware)
+        for pattern, replacement in end_rules.items():
+            content = re.sub(pattern, replacement, content)
+
+        with open(output_path, 'w', encoding='utf-8') as outfile:
+            outfile.write(content)
             
-        print(f"Success! Normalized text written to '{output_filename}'")
-        
-    except FileNotFoundError:
-        print(f"Error: File '{input_filename}' not found.")
-    except Exception as e:
-        print(f"An error occurred: {e}")
+        print("Success: Normalization complete.")
 
-if __name__ == "__main__":
-    process_file('sangraha_subset.txt', 'sangraha_ZWJ_removed.txt')
+    except Exception as e:
+        print(f"Error: {e}")
+
+normalize_malayalam_v3('input.txt', 'output.txt')

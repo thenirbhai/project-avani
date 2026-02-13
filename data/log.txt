@@ -1,0 +1,16 @@
+[remove_empty] L3: 
+[remove_empty] L5: 
+[remove_regex] L6: നിങ്ങൾ ഈ വാർത്ത വായിച്ചോ? https://example.com/news. ഇത് കൊള്ളാം!!!! 
+[remove_empty] L8: 
+[remove_heuristic] L13: (These should be removed entirely)
+[remove_empty] L14: 
+[remove_keyword] L16: കൂടുതൽ വായിക്കുക: സബ്സ്ക്രൈബ് ചെയ്യുക ലൈക്ക് ചെയ്യുക.
+[remove_empty] L17: 
+[remove_empty] L19: 
+[remove_empty] L20: 
+[remove_empty] L22: 
+[remove_empty] L24: 
+[remove_empty] L25: 
+[remove_heuristic] L26: വരി 3 (Excessive gaps should be closed)
+[remove_empty] L27: 
+[remove_heuristic] L28: Malayalam NFC test: ള + ി (This looks like ളി and should stay unified).
