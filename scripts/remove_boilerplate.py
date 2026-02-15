@@ -44,16 +44,10 @@ BOILERPLATE_KEYWORDS = [
     "Last Modified", "Last Updated", "English Edition",
     "Published:", "Updated:",
 
-    # Website-specific boilerplate footers
-    "Malayali Life", "MalluChronicle",
-    "manoramaonline", "mathrubhumi",
-    "MarunadanMalayalee.com",
-    "Rashtra Deepika Ltd",
-
     # Specific recurring boilerplate lines from marunadan site
     "മറുനാടൻ ടിവിയുടെ ഫേസ്ബുക്ക് പേജ് ഹാക്ക് ചെയ്തു",
     "ഷാജൻ സ്കറിയയുടെ വീഡിയോ കാണാം",
-    'കൂടുതൽ വായിക്കുക', 'തുടർന്ന് വായിക്കുക', 'കടപ്പാട്', 
+    'കൂടുതൽ വായിക്കുക', 'തുടർന്ന് വായിക്കുക', 
     'സബ്സ്ക്രൈബ് ചെയ്യുക', 'ഷെയർ ചെയ്യുക', 'കമന്റ് ചെയ്യുക', 
     'ലൈക്ക് ചെയ്യുക', 'സെർച്ച്'
 
